@@ -80,6 +80,19 @@ Confusion matrices: `confusion_v8_*.csv`.
 | Full low-k power spectrum for scintillation | AUC 0.956 vs 0.953 | negligible |
 | **Numpy CNN** (no DL framework available; hand-written backprop, gradient-checked to 3e-8) | 0.60 clean after 5 epochs on 2 CPU cores | stopped: too slow to converge here |
 
+## Overnight update: v11
+Real leaderboard feedback: v2 0.8571, v3 0.8543, v9 0.8507. These are within public-LB noise (~0.006 = ~18 cadences).
+
+- **Error analysis.** Many intermittent-RFI cadences have a line in all six panels, but at different channels or drifts (several transmitters). Scintillating stars brighten the ON panels as a whole: raw ON−OFF level +3.8 vs 0.0 for noise, which per-panel gain normalisation had removed.
+- **Feature group 6** (`features6.py`): the two strongest lines per panel are grouped across panels (±1.5 ch, ±0.07 ch/row) to give cluster coverage, other-transmitter counts and channel/drift scatter, plus the raw panel brightness levels.
+- **5-fold CV, identical folds:** clean 0.903 → **0.913**, test-matched 0.853 → **0.860**. Every fold improved; scintillating star F1 0.73 → ~0.78.
+- **MapNet** (`mapnet.py`): a 1-D CNN over drift-search line maps (6 panels × 7 maps × 144 channels) plus an MLP on the features; hand-written backprop, gradient-checked at 2e-7. Alone: 0.892 clean. A 20% blend gives +0.002 on fold 0.
+
+**Rejected:**
+- Line continuity / dashedness (group 7): 0.920 / 0.868 vs 0.921 / 0.875.
+- Block-wise brightness levels: AUC 0.88 vs 0.90 for the whole-panel level.
+- Feature quantile-matching: proxy 0.853 vs 0.875.
+
 ## Late checks (after leaderboard feedback)
 Each convention below was checked directly on the unlabeled test data; none explains the gap to the leaders:
 - Dispersion orientation: normal 11.8 vs frequency-reversed 4.3 on test.

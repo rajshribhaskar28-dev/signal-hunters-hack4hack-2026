@@ -8,7 +8,17 @@ augmented copies (one harsh, two matched to the real test noise). Details: **REP
 5-fold CV macro-F1: **0.903 ± 0.006** (clean GBT), **0.853 ± 0.008** (test-matched PKS-like
 proxy, which tracked the real public LB), 0.810 ± 0.004 (harsh proxy) for v8. The final v9 uses a larger booster (300 iterations, learning rate 0.08): about +0.007 on the test-matched proxy over 3 folds checked (see REPORT.md).
 
-## Reproduce the submission
+
+## v11 (overnight update) - reproduce `submission.csv`
+```bash
+python make_v11.py --data DATA_DIR      # features + line maps + trees + MapNet + 0.8/0.2 blend
+```
+v11 = HistGradientBoosting on feature groups 1,2,3,4 + **6 (multi-panel line geometry and raw ON-panel
+brightening)**, trained on clean + 3 augmented copies, blended 0.8/0.2 with **MapNet** (numpy 1-D CNN on
+drift-search line maps + feature MLP, 3 seeds). 5-fold CV of the tree part: **0.913 clean, 0.860
+test-matched** (v8: 0.903 / 0.853), all 5 folds improved.
+
+## Reproduce earlier versions (v9)
 ```bash
 pip install -r requirements.txt
 # put train_cadences.npy, test_cadences.npy, train_meta.csv, test_meta.csv, sample_submission.csv in DATA_DIR

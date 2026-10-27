@@ -3,7 +3,7 @@ import time, pickle, numpy as np, pandas as pd
 from sklearn.model_selection import StratifiedKFold
 from train import CLASSES, D, EXCLUDE, make_model, report, cm
 
-GROUPS = {'1': 'feat', '2': 'feat2', '3': 'feat3', '4': 'feat4', '5': 'feat5'}
+GROUPS = {'1': 'feat', '2': 'feat2', '3': 'feat3', '4': 'feat4', '5': 'feat5', '6': 'feat6', '7': 'feat7', 'r': 'featraw'}
 
 
 SELECT = None
@@ -16,7 +16,10 @@ def feats(tag, groups):
     parts = []
     for g in groups:
         f = pd.read_pickle(f'cache/{GROUPS[g]}_{tag}.pkl')
-        parts.append(f.drop(columns=[c for c in f.columns if c in EXCLUDE or c.startswith(EXCLUDE_PREFIX)]))
+        f = f.drop(columns=[c for c in f.columns if c in EXCLUDE or c.startswith(EXCLUDE_PREFIX)])
+        if g == 'r':   # raw (uncalibrated) detector scores: keep strong-signal amplitude information
+            f = f.add_prefix('raw_')
+        parts.append(f)
     X = pd.concat(parts, axis=1)
     return X[SELECT] if SELECT is not None else X
 
