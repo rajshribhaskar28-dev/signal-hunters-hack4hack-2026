@@ -1,8 +1,20 @@
-# Signal Hunters — Hack4Hack 2026 Round 2: Solution Report (final = v8)
+# Signal Hunters — Hack4Hack 2026 Round 2: Solution Report (final = v9)
 
 All numbers below come from executed runs (`experiment_results.csv`). No leaderboard numbers are used except where the team reported them.
 
 ## Headline
+**Final model v9** is the v8 recipe below with a larger booster: 300 iterations at learning rate 0.08 instead of 150 at 0.12. The CV table is for v8 (150 iterations, all 5 folds).
+
+The larger booster was checked on 3 of the 5 folds, with identical folds and in-fold feature selection:
+
+| Fold | Test-matched v8 → v9 | Clean v8 → v9 |
+|---|---|---|
+| 0 | 0.863 → 0.872 | 0.912 → 0.912 |
+| 1 | 0.852 → 0.852 | 0.906 → 0.912 |
+| 3 | 0.840 → 0.852 | 0.896 → 0.896 |
+
+That is a mean of +0.007 on the test-matched proxy, with no fold worse. The other two folds were not run, for time.
+
 | Validation (5-fold stratified, identical folds) | Macro-F1 mean ± std | Folds |
 |---|---|---|
 | Clean GBT | **0.903 ± 0.006** | 0.912 / 0.906 / 0.899 / 0.896 / 0.902 |
@@ -38,7 +50,7 @@ Real public-LB scores reported by the team: v2 = 0.8571, v3 = 0.8543. The test-m
   2. **Cross-panel bandpass** (leave-one-panel-out), so broad ON-only emission survives.
   3. **ETI track-consistency refinement:** local position and drift offsets at each ON panel, and the line-fit residual of the three ON positions in global time. This defeats the "same drift, unconnected" trap.
   4. **Matched 2D power-spectrum scintillation detector** (AUC 0.84 alone; the existing features reach 0.95 scintillating-star-vs-noise AUC combined).
-- **Model:** HistGradientBoosting with balanced class weights, 150 iterations, learning rate 0.12, 64 bins, averaged over 3 seeds. Trained on clean GBT + 1 harsh + 2 test-matched augmented copies (72,000 rows). No post-hoc thresholds: class-probability weights lowered held-out F1 by 0.003.
+- **Model:** HistGradientBoosting with balanced class weights, 300 iterations, learning rate 0.08, 64 bins (v9; v8 used 150 at 0.12), averaged over 3 seeds. Trained on clean GBT + 1 harsh + 2 test-matched augmented copies (72,000 rows). No post-hoc thresholds: class-probability weights lowered held-out F1 by 0.003.
 - **Metadata:** `channel_width_hz` and `tsamp_s` are constant per telescope (telescope identifiers), so they are excluded, as are `target` and `center_freq_mhz`. `slew_gap_rows` is used only in the track geometry.
 
 ## Per-class F1 (5-fold pooled OOF)
@@ -59,7 +71,8 @@ Confusion matrices: `confusion_v8_*.csv`.
 ## Tried and rejected (same validation rows)
 | Idea | Result | Decision |
 |---|---|---|
-| More iterations / larger trees / ExtraTrees / HGB+ET blend | no gain | rejected |
+| More iterations / larger trees / ExtraTrees / HGB+ET blend (on 2-copy training data) | no gain | rejected; but with 4× training data, 300 iterations at lr 0.08 gave +0.007 → adopted in v9 |
+| 500 instead of 350 features | fold 0: 0.865 vs 0.863 | not adopted |
 | Pseudo-labelling (proxy) | ≤ +0.002 | not in final |
 | Per-class probability weights | −0.003 on held-out halves | rejected |
 | Per-line ON/OFF occupancy inventory (group 5) | 0.908 / 0.805 vs 0.909 / 0.808 | rejected (code kept) |

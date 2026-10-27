@@ -8,8 +8,8 @@
   "val_aug": 2,
   "n_features": 350,
   "hgb": {
-    "max_iter": 150,
-    "lr": 0.12,
+    "max_iter": 300,
+    "lr": 0.08,
     "bins": 64
   },
   "seeds": [

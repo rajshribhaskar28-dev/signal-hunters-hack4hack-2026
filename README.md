@@ -6,7 +6,7 @@ scintillation detector) + HistGradientBoosting trained on clean GBT data plus th
 augmented copies (one harsh, two matched to the real test noise). Details: **REPORT.md**.
 
 5-fold CV macro-F1: **0.903 ± 0.006** (clean GBT), **0.853 ± 0.008** (test-matched PKS-like
-proxy, which tracked the real public LB), 0.810 ± 0.004 (harsh proxy).
+proxy, which tracked the real public LB), 0.810 ± 0.004 (harsh proxy) for v8. The final v9 uses a larger booster (300 iterations, learning rate 0.08): about +0.007 on the test-matched proxy over 3 folds checked (see REPORT.md).
 
 ## Reproduce the submission
 ```bash
