@@ -9,7 +9,7 @@ ok = True
 for split, s, aug in [('train', 4000, None), ('test', 8000, None), ('train', 1200, 2)]:
     X = np.load(f'{D}/{split}_cadences.npy', mmap_mode='r'); gaps = pd.read_csv(f'{D}/{split}_meta.csv').slew_gap_rows.values
     u8 = np.asarray(X[s:s + 200])
-    if aug is not None: u8 = pks_like(u8, np.random.default_rng(aug * 100003 + s))
+    if aug is not None: u8 = pks_like(u8, np.random.default_rng(aug * 100003 + s), seed=aug)
     tag = split if aug is None else f'{split}_aug{aug}'
     for pre, fn in [('feat', lambda: extract(u8, gaps[s:s+200])), ('feat2', lambda: extract2(u8)),
                     ('feat3', lambda: extract3(u8, gaps[s:s+200])), ('feat4', lambda: extract4(u8))]:

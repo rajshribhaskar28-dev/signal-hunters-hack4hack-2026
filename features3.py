@@ -10,7 +10,7 @@ python features3.py <train|test> [aug_seed]
 import sys, time, warnings
 import numpy as np, pandas as pd
 from prep import preprocess
-from drift import drift_sums
+from drift import drift_sums, calibrate
 from features import SLOW, PAD, D, ON, OFF
 
 warnings.filterwarnings('ignore')
@@ -53,8 +53,10 @@ def extract3(u8, gaps):
             zz[..., :-1] = (zf[..., :-1] + zf[..., 1:]) / np.sqrt(2)
             vv = valid.copy(); vv[..., -1] = False
             S, _ = drift_sums(np.where(vv, zz, 0), vv, SLOW, PAD)
+            S = calibrate(S)
         else:
             S, _ = drift_sums(z, valid, SLOW, PAD)
+            S = calibrate(S)
         W = S.shape[-1]
         bd, bj, bv = best_track(S, gaps)
         out[f'{tag}t_eti'] = bv
@@ -99,7 +101,7 @@ def run(split, batch=200, aug=None):
         u8 = np.asarray(X[s:s + batch])
         if aug is not None:
             from augment import pks_like
-            u8 = pks_like(u8, np.random.default_rng(aug * 100003 + s))
+            u8 = pks_like(u8, np.random.default_rng(aug * 100003 + s), seed=aug)
         parts.append(extract3(u8, gaps[s:s + batch]))
     F = pd.concat(parts, ignore_index=True)
     tag = split if aug is None else f'{split}_aug{aug}'

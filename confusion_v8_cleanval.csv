@@ -1,0 +1,10 @@
+,eti_ca,frb,pulsar,scinti,satell,radar_,rfi_in,rfi_pe,noise
+eti_candid,387,0,0,1,8,5,43,29,6
+frb,0,1030,1,0,6,2,0,1,2
+pulsar,0,1,1624,0,3,1,0,0,0
+scintillat,1,7,3,958,62,43,54,118,185
+satellite_,1,5,1,26,1621,51,22,42,36
+radar_chir,1,0,2,5,22,1746,16,40,17
+rfi_interm,71,0,0,28,16,6,2328,178,35
+rfi_persis,5,0,0,26,8,5,68,2780,0
+noise,3,0,1,141,18,15,19,16,3998

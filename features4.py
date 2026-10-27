@@ -74,7 +74,7 @@ def run(split, batch=200, aug=None):
         u8 = np.asarray(X[s:s + batch])
         if aug is not None:
             from augment import pks_like
-            u8 = pks_like(u8, np.random.default_rng(aug * 100003 + s))
+            u8 = pks_like(u8, np.random.default_rng(aug * 100003 + s), seed=aug)
         parts.append(extract4(u8))
     F = pd.concat(parts, ignore_index=True)
     tag = split if aug is None else f'{split}_aug{aug}'

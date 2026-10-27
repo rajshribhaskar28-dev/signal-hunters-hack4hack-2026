@@ -47,5 +47,9 @@ def preprocess(u8, glitch_k=0.6, smooth=9):
             s = _nanmad(r, axis=(2, 3))
             s = np.where((s > 0) & np.isfinite(s), s, 1.0)
             z = (r - np.nanmedian(r, axis=(2, 3), keepdims=True)) / s
+            # tail equalisation: match the upper noise quantile (q90) across receivers
+            q90 = np.nanquantile(z, 0.9, axis=(2, 3), keepdims=True)
+            up = np.where(np.isfinite(q90) & (q90 > 0.3), q90 / 1.2816, 1.0)
+            z = z / up
     valid = np.isfinite(z)
     return z.astype(np.float32), valid, glitch[..., 0], s[:, :, 0, 0]

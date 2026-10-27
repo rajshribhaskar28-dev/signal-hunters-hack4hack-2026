@@ -29,3 +29,20 @@ def drift_sums(z, valid, drifts, pad, min_rows=4):
         S[:, :, k] = np.where(cnt >= min_rows, acc / np.sqrt(np.maximum(cnt, 1)), 0)
         N[:, :, k] = cnt
     return S, N
+
+
+def calibrate(S, axes=(2, 3)):
+    """Null calibration: express trial statistics as robust significance relative to the
+    panel's own distribution over all trials (dominated by noise), so detection thresholds
+    mean the same thing for receivers with different noise-tail shapes. Zero = invalid."""
+    import warnings
+    m = S != 0
+    X = np.where(m, S, np.nan)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore')
+        med = np.nanmedian(X, axis=axes, keepdims=True)
+        # spread from the upper tail of the trial distribution (q98), so maxima over many
+        # trials are calibrated even when the noise-tail shape differs between receivers
+        mad = (np.nanquantile(X, 0.98, axis=axes, keepdims=True) - med) / 2.054
+    med = np.nan_to_num(med); mad = np.where(np.isfinite(mad) & (mad > 0), mad, 1.0)
+    return np.where(m, (S - med) / mad, 0).astype(np.float32)

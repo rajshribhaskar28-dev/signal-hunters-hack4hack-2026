@@ -3,17 +3,20 @@ import time, pickle, numpy as np, pandas as pd
 from sklearn.model_selection import StratifiedKFold
 from train import CLASSES, D, EXCLUDE, make_model, report, cm
 
-GROUPS = {'1': 'feat', '2': 'feat2', '3': 'feat3', '4': 'feat4'}
+GROUPS = {'1': 'feat', '2': 'feat2', '3': 'feat3', '4': 'feat4', '5': 'feat5'}
 
 
 SELECT = None
+# pixel-extreme statistics: strongly telescope dependent (KS~0.3 GBT vs PKS) and redundant
+# with the null-calibrated detectors -> excluded
+EXCLUDE_PREFIX = ('zmax_', 'frac3_', 'frac5_', 'pos_mean_')
 
 
 def feats(tag, groups):
     parts = []
     for g in groups:
         f = pd.read_pickle(f'cache/{GROUPS[g]}_{tag}.pkl')
-        parts.append(f.drop(columns=[c for c in EXCLUDE if c in f.columns]))
+        parts.append(f.drop(columns=[c for c in f.columns if c in EXCLUDE or c.startswith(EXCLUDE_PREFIX)]))
     X = pd.concat(parts, axis=1)
     return X[SELECT] if SELECT is not None else X
 
@@ -78,11 +81,19 @@ def fit_predict(cfg, out='submission.csv', tag='final'):
     Xs = [feats('train', g)] + [feats(f'train_aug{a}', g) for a in cfg['augs']]
     X = pd.concat(Xs); y = np.concatenate([yi] * len(Xs))
     Xt = feats('test', g)[X.columns]
-    P = np.zeros((len(Xt), len(CLASSES)))
-    for s in cfg.get('seeds', [0]):
-        m = make_model('hgb', s, **cfg['hgb']).fit(X, y)
-        P += m.predict_proba(Xt) / len(cfg.get('seeds', [0]))
-        pickle.dump(m, open(f'cache/model_{tag}_s{s}.pkl', 'wb'))
+    def fit_avg(Xf, yf):
+        Pa = np.zeros((len(Xt), len(CLASSES)))
+        for s in cfg.get('seeds', [0]):
+            m = make_model('hgb', s, **cfg['hgb']).fit(Xf, yf)
+            Pa += m.predict_proba(Xt) / len(cfg.get('seeds', [0]))
+        return Pa
+    P = fit_avg(X, y)
+    # optional self-training on the unlabeled PKS test cadences (no test labels are used):
+    # confident predictions become pseudo-labels, the model is refit, repeated pl_rounds times
+    for r in range(cfg.get('pl_rounds', 0)):
+        sel = P.max(1) >= cfg['pl_thr']
+        print(f'pseudo-label round {r+1}: {sel.sum()} test rows', flush=True)
+        P = fit_avg(pd.concat([X, Xt[sel]]), np.concatenate([y, P.argmax(1)[sel]]))
     np.save(f'cache/testP_{tag}.npy', P)
     Pw = apply_weights(P, cfg.get('class_weights', [1] * len(CLASSES)))
     te = pd.read_csv(f'{D}/test_meta.csv'); ss = pd.read_csv(f'{D}/sample_submission.csv')

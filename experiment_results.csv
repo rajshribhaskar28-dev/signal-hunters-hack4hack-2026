@@ -28,7 +28,47 @@ v1234sel350_aug2_cleanval_f3,0.8946,0.8087,0.9879,0.9954,0.7121,0.8883,0.9274,0.
 v1234sel350_aug2_pksval_f3,0.8032,0.6415,0.9804,0.9686,0.5549,0.7706,0.8405,0.7748,0.8329,0.8643,"HGB {'max_iter': 150, 'lr': 0.12, 'bins': 64}",groups 1234 (350),strat fold3/5 pksval,0.0,59.0,Final recipe CV fold.
 v1234sel350_aug2_cleanval_f4,0.9064,0.8187,0.9905,0.9954,0.7466,0.9277,0.9458,0.8823,0.9053,0.9455,"HGB {'max_iter': 150, 'lr': 0.12, 'bins': 64}",groups 1234 (350),strat fold4/5 cleanval,0.0,57.0,Final recipe CV fold.
 v1234sel350_aug2_pksval_f4,0.8135,0.7176,0.9833,0.9765,0.5371,0.7892,0.8439,0.7788,0.8414,0.8535,"HGB {'max_iter': 150, 'lr': 0.12, 'bins': 64}",groups 1234 (350),strat fold4/5 pksval,0.0,57.0,Final recipe CV fold.
+cal1234_cleanval_f0,0.9091,0.8449,0.988,0.9939,0.7179,0.9181,0.9505,0.907,0.9238,0.9377,"HGB {'max_iter': 150, 'lr': 0.12, 'bins': 64}",groups 1234 (350),strat fold0/5 cleanval,0.0,53.0,Calibrated detectors + tail equalisation: halves real GBT-vs-PKS KS shift; proxy -0.01.
+cal1234_pksval_f0,0.8081,0.6497,0.9561,0.9637,0.5714,0.8006,0.8482,0.7813,0.84,0.8618,"HGB {'max_iter': 150, 'lr': 0.12, 'bins': 64}",groups 1234 (350),strat fold0/5 pksval,0.0,53.0,Calibrated detectors + tail equalisation: halves real GBT-vs-PKS KS shift; proxy -0.01.
+cal12345_cleanval_f0,0.9078,0.8387,0.9856,0.9954,0.7251,0.9121,0.953,0.899,0.921,0.9401,"HGB {'max_iter': 150, 'lr': 0.12, 'bins': 64}",groups 12345 (350),strat fold0/5 cleanval,0.0,56.0,"Reject: + per-line occupancy inventory (group 5), no gain."
+cal12345_pksval_f0,0.8045,0.6289,0.9586,0.9652,0.5558,0.8054,0.8402,0.7849,0.8475,0.8541,"HGB {'max_iter': 150, 'lr': 0.12, 'bins': 64}",groups 12345 (350),strat fold0/5 pksval,0.0,56.0,"Reject: + per-line occupancy inventory (group 5), no gain."
+cal1234_noaug_cleanval_f0,0.9076,0.8324,0.988,0.9969,0.7298,0.9178,0.9484,0.8959,0.9171,0.9417,"HGB {'max_iter': 150, 'lr': 0.12, 'bins': 64}",groups 1234 (350),strat fold0/5 cleanval,0.0,51.0,"Calibrated features, no augmentation (clean training)."
+cal1234_noaug_pksval_f0,0.7761,0.6065,0.937,0.9205,0.5236,0.7754,0.828,0.7566,0.798,0.839,"HGB {'max_iter': 150, 'lr': 0.12, 'bins': 64}",groups 1234 (350),strat fold0/5 pksval,0.0,51.0,"Calibrated features, no augmentation (clean training)."
+matched_cleanval_f0,0.9164,0.8587,0.9904,0.9985,0.7466,0.9203,0.9498,0.9118,0.9266,0.9453,HGB cal,cal groups 1234 (350),strat fold0 cleanval,0.0,53.0,Training on test-matched augmentation only.
+matched_harshval_f0,0.806,0.6369,0.9559,0.9586,0.5595,0.8025,0.8526,0.7874,0.8357,0.865,HGB cal,cal groups 1234 (350),strat fold0 harshval,0.0,53.0,Training on test-matched augmentation only.
+matched_matchedval_f0,0.8553,0.7066,0.9928,0.9814,0.6206,0.8539,0.8979,0.8563,0.8847,0.904,HGB cal,cal groups 1234 (350),strat fold0 matchedval,0.0,54.0,Training on test-matched augmentation only.
+harsh_cleanval_f0,0.9091,0.8449,0.988,0.9939,0.7179,0.9181,0.9505,0.907,0.9238,0.9377,HGB cal,cal groups 1234 (350),strat fold0 cleanval,0.0,53.0,Training on original (too strong) augmentation only.
+harsh_harshval_f0,0.8081,0.6497,0.9561,0.9637,0.5714,0.8006,0.8482,0.7813,0.84,0.8618,HGB cal,cal groups 1234 (350),strat fold0 harshval,0.0,53.0,Training on original (too strong) augmentation only.
+harsh_matchedval_f0,0.8567,0.7168,0.9952,0.9846,0.6265,0.8588,0.8904,0.8517,0.8847,0.9017,HGB cal,cal groups 1234 (350),strat fold0 matchedval,0.0,53.0,Training on original (too strong) augmentation only.
+both_cleanval_f0,0.9117,0.8511,0.988,0.9985,0.7132,0.9309,0.9547,0.9038,0.9282,0.9369,HGB cal,cal groups 1234 (350),strat fold0 cleanval,0.0,71.0,Harsh + matched augmentation.
+both_harshval_f0,0.8038,0.6369,0.9565,0.9701,0.538,0.8024,0.8507,0.7824,0.8383,0.8585,HGB cal,cal groups 1234 (350),strat fold0 harshval,0.0,71.0,Harsh + matched augmentation.
+both_matchedval_f0,0.861,0.7816,0.9928,0.9846,0.6069,0.8494,0.8973,0.8574,0.8863,0.8925,HGB cal,cal groups 1234 (350),strat fold0 matchedval,0.0,71.0,Harsh + matched augmentation.
+none_cleanval_f0,0.9096,0.8525,0.988,0.9923,0.7381,0.9127,0.9514,0.8938,0.9128,0.9446,HGB cal,cal groups 1234 (350),strat fold0 cleanval,0.0,36.0,No augmentation.
+none_harshval_f0,0.7814,0.6065,0.9397,0.9136,0.5444,0.7793,0.8338,0.7637,0.8078,0.8436,HGB cal,cal groups 1234 (350),strat fold0 harshval,0.0,36.0,No augmentation.
+none_matchedval_f0,0.8456,0.7219,0.9805,0.9733,0.598,0.8448,0.8942,0.8373,0.8665,0.894,HGB cal,cal groups 1234 (350),strat fold0 matchedval,0.0,36.0,No augmentation.
+three_cleanval_f0,0.9118,0.8511,0.9905,0.9985,0.7287,0.9121,0.9506,0.9087,0.9302,0.9361,HGB cal,cal groups 1234 (350),strat fold0 cleanval,0.0,89.0,FINAL (v8): harsh + 2x matched augmentation.
+three_harshval_f0,0.8122,0.6369,0.9617,0.9701,0.5747,0.8031,0.8592,0.7942,0.8467,0.8632,HGB cal,cal groups 1234 (350),strat fold0 harshval,0.0,89.0,FINAL (v8): harsh + 2x matched augmentation.
+three_matchedval_f0,0.8633,0.7614,0.9952,0.9877,0.6064,0.8551,0.9041,0.8718,0.8916,0.8964,HGB cal,cal groups 1234 (350),strat fold0 matchedval,0.0,89.0,FINAL (v8): harsh + 2x matched augmentation.
+three_cleanval_f1,0.9062,0.8306,0.9928,0.9939,0.7301,0.9152,0.9412,0.9015,0.901,0.9496,HGB cal,cal groups 1234 (350),strat fold1 cleanval,0.0,87.0,FINAL (v8): harsh + 2x matched augmentation.
+three_harshval_f1,0.8096,0.6587,0.9554,0.9618,0.5619,0.7906,0.854,0.7941,0.8397,0.8699,HGB cal,cal groups 1234 (350),strat fold1 harshval,0.0,87.0,FINAL (v8): harsh + 2x matched augmentation.
+three_matchedval_f1,0.8516,0.6982,0.9805,0.9954,0.6342,0.8443,0.8925,0.8427,0.8781,0.8988,HGB cal,cal groups 1234 (350),strat fold1 matchedval,0.0,88.0,FINAL (v8): harsh + 2x matched augmentation.
+three_cleanval_f2,0.8988,0.7897,0.9832,0.9954,0.7716,0.8983,0.9283,0.8699,0.9078,0.9452,HGB cal,cal groups 1234 (350),strat fold2 cleanval,0.0,86.0,FINAL (v8): harsh + 2x matched augmentation.
+three_harshval_f2,0.8112,0.6199,0.963,0.9653,0.594,0.7928,0.8436,0.7912,0.8655,0.8656,HGB cal,cal groups 1234 (350),strat fold2 harshval,0.0,86.0,FINAL (v8): harsh + 2x matched augmentation.
+three_matchedval_f2,0.861,0.7403,0.9805,0.9861,0.6667,0.8459,0.8926,0.8426,0.8838,0.91,HGB cal,cal groups 1234 (350),strat fold2 matchedval,0.0,86.0,FINAL (v8): harsh + 2x matched augmentation.
+three_cleanval_f3,0.896,0.7957,0.9831,0.9985,0.7135,0.8966,0.9266,0.9033,0.9109,0.9362,HGB cal,cal groups 1234 (350),strat fold3 cleanval,0.0,85.0,FINAL (v8): harsh + 2x matched augmentation.
+three_harshval_f3,0.8019,0.6258,0.9728,0.9765,0.5643,0.7644,0.848,0.7755,0.8325,0.8575,HGB cal,cal groups 1234 (350),strat fold3 harshval,0.0,85.0,FINAL (v8): harsh + 2x matched augmentation.
+three_matchedval_f3,0.8401,0.6786,0.9757,0.986,0.6221,0.8135,0.8901,0.8293,0.8629,0.9025,HGB cal,cal groups 1234 (350),strat fold3 matchedval,0.0,85.0,FINAL (v8): harsh + 2x matched augmentation.
+three_cleanval_f4,0.902,0.8163,0.9905,0.9939,0.7186,0.92,0.9431,0.8827,0.9109,0.942,HGB cal,cal groups 1234 (350),strat fold4 cleanval,0.0,86.0,FINAL (v8): harsh + 2x matched augmentation.
+three_harshval_f4,0.8151,0.75,0.9782,0.9685,0.532,0.7837,0.8388,0.7917,0.8417,0.8515,HGB cal,cal groups 1234 (350),strat fold4 harshval,0.0,87.0,FINAL (v8): harsh + 2x matched augmentation.
+three_matchedval_f4,0.8509,0.7582,0.9809,0.9875,0.624,0.8358,0.8856,0.83,0.8671,0.8888,HGB cal,cal groups 1234 (350),strat fold4 matchedval,0.0,87.0,FINAL (v8): harsh + 2x matched augmentation.
 classweights_fit_on_pks_f0,0.8268,,,,,,,,,,HGB + per-class prob weights,,fit on fold0 pksval (in-sample),,,Reject: on held-out halves base 0.8290->0.8255 and 0.8111->0.8117; weights from clean/pks views conflict.
 eti_weight_1.5_f0_pks,0.8226,,,,,,,,,,"HGB, ETI prob x1.5",,strat fold0 pksval,,,Reject: +-0.002 effect on both views (noise level).
-FINAL_5fold_cleanval,0.9057,,,,,,,,,,"HGB it150 lr.12 bins64, top-350",,"5-fold strat, clean GBT; folds 0.9131/0.9067/0.9077/0.8946/0.9064; std 0.0060",,,Final model CV estimate (clean).
-FINAL_5fold_pksval,0.8123,,,,,,,,,,"HGB it150 lr.12 bins64, top-350",,"5-fold strat, PKS-like perturbed GBT; folds 0.8203/0.8130/0.8117/0.8032/0.8135; std 0.0055",,,Final model CV estimate (domain-shift stress proxy).
+v3recipe_5fold_cleanval,0.9057,,,,,,,,,,"HGB it150 lr.12 bins64, top-350",,"5-fold strat, clean GBT; folds 0.9131/0.9067/0.9077/0.8946/0.9064; std 0.0060",,,Final model CV estimate (clean).
+v3recipe_5fold_pksval,0.8123,,,,,,,,,,"HGB it150 lr.12 bins64, top-350",,"5-fold strat, PKS-like perturbed GBT; folds 0.8203/0.8130/0.8117/0.8032/0.8135; std 0.0055",,,Final model CV estimate (domain-shift stress proxy).
+v8_5fold_cleanval,0.903,,,,,,,,,,,,5-fold; std 0.0056,,,FINAL v8 CV (clean)
+v8_5fold_matchedval,0.8534,,,,,,,,,,,,5-fold test-matched proxy; std 0.0083,,,FINAL v8 CV (tracks real LB)
+v8_5fold_harshval,0.81,,,,,,,,,,,,5-fold harsh proxy; std 0.0044,,,FINAL v8 CV (harsh)
+numpy_cnn_fold0_ep4,0.6046,,,,,,,,,,,,strat fold0 clean (pks 0.4993),,,Reject: CNN too slow to converge on 2 CPUs
+classweights_matched_halfsplit,,,,,,,,,,,,,mean held-out gain -0.0031,,,Reject
+LB_public_v2,0.8571,,,,,,,,,,,,public leaderboard (team-reported),,,
+LB_public_v3,0.8543,,,,,,,,,,,,public leaderboard (team-reported),,,

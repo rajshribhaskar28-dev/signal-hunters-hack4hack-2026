@@ -4,7 +4,10 @@ glitch/dropped-row rates, panel gain spread), never from test labels."""
 import numpy as np
 
 
-def pks_like(u8, rng):
+K_RANGE = {2: (4.0, 8.0), 3: (4.0, 8.0)}   # original (too strong) copies; others use the test-matched range
+
+
+def pks_like(u8, rng, seed=None):
     B = u8.shape[0]
     v = u8.astype(np.float32)
     miss = v == 0
@@ -13,7 +16,8 @@ def pks_like(u8, rng):
     ch = np.arange(128) / 127.0
     # noisier receiver: GBT log-noise ~ Gamma(k~8), PKS ~ Gamma(k~4.6)
     # fewer averaged degrees of freedom: multiply linear power by Gamma(k,1/k) noise
-    k = rng.uniform(4.0, 8.0, size=(B, 1, 1, 1))
+    lo, hi = K_RANGE.get(seed, (8.0, 16.0))   # (8,16) matches PKS pixel autocorrelation (0.042 vs 0.046)
+    k = rng.uniform(lo, hi, size=(B, 1, 1, 1))
     p = np.exp2(v / 24.0 - 4.0) * rng.gamma(k, 1.0 / k, size=v.shape)
     v = (24.0 * (np.log2(np.maximum(p, 1e-12)) + 4.0)).astype(np.float32)
     # bandpass: roll-off, tilt, ripple

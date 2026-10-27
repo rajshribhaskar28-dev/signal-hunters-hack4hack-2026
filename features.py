@@ -7,7 +7,7 @@ import sys, os, time, warnings
 import numpy as np, pandas as pd
 from scipy.ndimage import uniform_filter, maximum_filter1d
 from prep import preprocess
-from drift import drift_sums
+from drift import drift_sums, calibrate
 
 warnings.filterwarnings('ignore')
 D = os.environ.get('SH_DATA', 'data')
@@ -155,6 +155,7 @@ def extract(u8, gaps):
     panel_aggs('spec_frac3', (spec > 3).mean(2), out)
     # ---- drift search ----
     S, N = drift_sums(z, valid, SLOW, PAD)                           # B,6,NS,W
+    S = calibrate(S)
     absS = np.abs(SLOW)
     zero = absS <= 0.0625 + 1e-6
     slow = ~zero
@@ -194,6 +195,7 @@ def extract(u8, gaps):
     # ---- fast & steep lines (satellite, radar) ----
     Sf, _ = drift_sums(z, valid, FAST, 70)
     Ss, _ = drift_sums(z, valid, STEEP, 260)
+    Sf = calibrate(Sf); Ss = calibrate(Ss)
     fbest = Sf.max(-1); sbest = Ss.max(-1)
     panel_aggs('line_fast', fbest.max(-1), out)
     panel_aggs('line_steep', sbest.max(-1), out)
@@ -216,6 +218,7 @@ def extract(u8, gaps):
     del Sf, Ss
     # ---- dedispersion (pulsar / frb) ----
     Dd, t0s = dedisperse(z, valid)                                   # B,6,A,T
+    Dd = calibrate(Dd)
     disp = Dd[:, :, 2:]                                              # A>=2
     dbest = disp.max((2, 3))
     panel_aggs('disp_best', dbest, out)
@@ -244,7 +247,7 @@ def run(split, batch=200, aug=None):
         u8 = np.asarray(X[s:s + batch])
         if aug is not None:
             from augment import pks_like
-            u8 = pks_like(u8, np.random.default_rng(aug * 100003 + s))
+            u8 = pks_like(u8, np.random.default_rng(aug * 100003 + s), seed=aug)
         parts.append(extract(u8, gaps[s:s + batch]))
         if s % 2000 == 0:
             print(split, s, f'{time.time() - t0:.0f}s', flush=True)
