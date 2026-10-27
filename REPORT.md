@@ -80,6 +80,16 @@ Confusion matrices: `confusion_v8_*.csv`.
 | Full low-k power spectrum for scintillation | AUC 0.956 vs 0.953 | negligible |
 | **Numpy CNN** (no DL framework available; hand-written backprop, gradient-checked to 3e-8) | 0.60 clean after 5 epochs on 2 CPU cores | stopped: too slow to converge here |
 
+## Late checks (after leaderboard feedback)
+Each convention below was checked directly on the unlabeled test data; none explains the gap to the leaders:
+- Dispersion orientation: normal 11.8 vs frequency-reversed 4.3 on test.
+- PKS fixed-channel lines: none, max 0.3% of cadences.
+- EM-estimated test label mix: close to train.
+- ON/OFF panel order: unchanged.
+- Metadata or ID leakage: metadata predicts labels below chance (0.05 vs 0.11).
+
+Adding raw (uncalibrated) detector scores next to the calibrated ones gave +0.007 on fold 0 and −0.001 on fold 3, so it was not adopted.
+
 ## Limits and risks
 - The weakest classes under PKS-like noise are scintillating stars (0.63), ETI (0.73) and satellites (0.84). Faint signals are lost to `noise`, so the score is sensitivity-limited rather than model-limited. A GPU-trained CNN is the most likely route to higher scores; it was not possible in this CPU-only, install-blocked environment.
 - The augmentation matches pixel statistics, not the true PKS signal and class mix, so the test-matched proxy is an estimate, not a guarantee.

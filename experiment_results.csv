@@ -72,3 +72,10 @@ numpy_cnn_fold0_ep4,0.6046,,,,,,,,,,,,strat fold0 clean (pks 0.4993),,,Reject: C
 classweights_matched_halfsplit,,,,,,,,,,,,,mean held-out gain -0.0031,,,Reject
 LB_public_v2,0.8571,,,,,,,,,,,,public leaderboard (team-reported),,,
 LB_public_v3,0.8543,,,,,,,,,,,,public leaderboard (team-reported),,,
+cap_it300_matchedval_f0,0.8723,,,,,,,,,,,,strat fold0 matched,,,v9 recipe
+cap_it300_matchedval_f1,0.8521,,,,,,,,,,,,strat fold1 matched,,,v9 recipe
+cap_it300_matchedval_f3,0.8518,,,,,,,,,,,,strat fold3 matched,,,v9 recipe
+cap_f500_matchedval_f0,0.8652,,,,,,,,,,,,strat fold0 matched,,,500 features: not adopted
+raw+cal_a24_matchedval_f0,0.8743,,,,,,,,,,,,strat fold0 matched (baseline w/o raw 0.8677),,,raw uncalibrated detector scores added
+raw+cal_a24_matchedval_f3,0.8452,,,,,,,,,,,,strat fold3 matched (baseline w/o raw 0.8465),,,"Reject: mixed (+0.007 / -0.001), v9 better on average"
+checks_ruled_out,,,,,,,,,,,,,test-data audits,,,freq/time orientation same; no PKS fixed-channel lines; EM test prior ~ train; ON/OFF order same; metadata predicts labels below chance
