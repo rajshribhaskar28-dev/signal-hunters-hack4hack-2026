@@ -1,0 +1,30 @@
+{
+  "groups": "1234",
+  "augs": [
+    2
+  ],
+  "val_aug": 2,
+  "n_features": 350,
+  "hgb": {
+    "max_iter": 150,
+    "lr": 0.12,
+    "bins": 64
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "class_weights": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "select_in_fold": true
+}

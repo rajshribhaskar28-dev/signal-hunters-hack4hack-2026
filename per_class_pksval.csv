@@ -1,0 +1,10 @@
+,precision,recall,f1,support
+eti_candidate,0.778,0.557,0.65,479
+frb,0.988,0.965,0.977,1042
+pulsar,0.994,0.961,0.978,1629
+scintillating_star,0.661,0.49,0.563,1431
+satellite_pass,0.892,0.731,0.804,1805
+radar_chirp,0.883,0.817,0.849,1849
+rfi_intermittent,0.828,0.748,0.786,2662
+rfi_persistent,0.792,0.908,0.846,2892
+noise,0.786,0.951,0.861,4211

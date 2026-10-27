@@ -1,0 +1,5 @@
+cache/
+*.pkl
+*.npy
+__pycache__/
+*.log
