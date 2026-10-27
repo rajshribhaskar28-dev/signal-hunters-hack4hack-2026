@@ -48,3 +48,14 @@ HGB seeds 0,1,2 averaged).
    **before 11:59 PM IST, 27 Oct 2026**.
 3. Optional: confirm the repo is public and that `python train_pipeline.py --data ...` is documented
    (it is, above).
+
+## Optional: GPU CNN + blend (`gpu_cnn.py`, run on Colab/Kaggle with a GPU)
+```
+!git clone https://github.com/rajshribhaskar28-dev/signal-hunters-hack4hack-2026 sh
+%cd sh
+!unzip -q /content/signal-hunters-round2.zip -d /content/data
+!python gpu_cnn.py --data /content/data/signal-hunters-round2
+```
+Trains a CNN on the six panels (+ ON−OFF channels) with the same preprocessing and test-matched
+augmentation, validates on GBM fold 0, picks the CNN/GBM blend weight there, retrains on all rows
+and writes `submission_cnn_blend.csv`. Not executed in the CPU-only development environment.

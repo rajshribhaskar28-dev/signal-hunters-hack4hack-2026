@@ -3,3 +3,4 @@ cache/
 *.npy
 __pycache__/
 *.log
+!blend/*.npy
