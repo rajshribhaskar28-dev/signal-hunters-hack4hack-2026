@@ -9,6 +9,13 @@ augmented copies (one harsh, two matched to the real test noise). Details: **REP
 proxy, which tracked the real public LB), 0.810 ± 0.004 (harsh proxy) for v8. The final v9 uses a larger booster (300 iterations, learning rate 0.08): about +0.007 on the test-matched proxy over 3 folds checked (see REPORT.md).
 
 
+## v12 (current submission) - reproduce `submission.csv`
+```bash
+python make_v12.py --data DATA_DIR
+```
+v12 = v11 + raw (uncalibrated) detector scores as an extra feature group, alongside the calibrated ones.
+Public LB: v11 = **0.8627**. Validation, leaderboard-matched proxy: fold 0 0.875 -> 0.878, fold 3 0.850 -> 0.856 (clean unchanged).
+
 ## v11 (overnight update) - reproduce `submission.csv`
 ```bash
 python make_v11.py --data DATA_DIR      # features + line maps + trees + MapNet + 0.8/0.2 blend

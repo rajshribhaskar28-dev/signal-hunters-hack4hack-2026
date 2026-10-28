@@ -80,6 +80,13 @@ Confusion matrices: `confusion_v8_*.csv`.
 | Full low-k power spectrum for scintillation | AUC 0.956 vs 0.953 | negligible |
 | **Numpy CNN** (no DL framework available; hand-written backprop, gradient-checked to 3e-8) | 0.60 clean after 5 epochs on 2 CPU cores | stopped: too slow to converge here |
 
+## Morning update: v12
+- The public LB confirmed v11 at 0.8627, up from 0.8571 for v2. This is the first validated in-domain gain to carry over to the leaderboard.
+- v12 adds the raw (uncalibrated) detector scores back next to the calibrated ones, because calibration had damped the brightest signals.
+  - Fold 0, leaderboard-matched: +0.003. Fold 3: +0.006. Clean: unchanged.
+- Rejected: a larger booster (500 iterations, 47 leaves). Matched dropped from 0.875 to 0.872.
+- `make_v12.py` reproduces `submission.csv` exactly. This was verified from a clean copy with no label differences.
+
 ## Overnight update: v11
 Real leaderboard feedback: v2 0.8571, v3 0.8543, v9 0.8507. These are within public-LB noise (~0.006 = ~18 cadences).
 

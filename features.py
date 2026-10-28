@@ -10,6 +10,7 @@ from prep import preprocess
 from drift import drift_sums, calibrate
 
 warnings.filterwarnings('ignore')
+CALIB = os.environ.get('SH_CALIB', '1') == '1'   # 0 -> raw (uncalibrated) detector scores
 D = os.environ.get('SH_DATA', 'data')
 ON, OFF = [0, 2, 4], [1, 3, 5]
 
@@ -155,7 +156,7 @@ def extract(u8, gaps):
     panel_aggs('spec_frac3', (spec > 3).mean(2), out)
     # ---- drift search ----
     S, N = drift_sums(z, valid, SLOW, PAD)                           # B,6,NS,W
-    S = calibrate(S)
+    if CALIB: S = calibrate(S)
     absS = np.abs(SLOW)
     zero = absS <= 0.0625 + 1e-6
     slow = ~zero
@@ -195,7 +196,7 @@ def extract(u8, gaps):
     # ---- fast & steep lines (satellite, radar) ----
     Sf, _ = drift_sums(z, valid, FAST, 70)
     Ss, _ = drift_sums(z, valid, STEEP, 260)
-    Sf = calibrate(Sf); Ss = calibrate(Ss)
+    if CALIB: Sf = calibrate(Sf); Ss = calibrate(Ss)
     fbest = Sf.max(-1); sbest = Ss.max(-1)
     panel_aggs('line_fast', fbest.max(-1), out)
     panel_aggs('line_steep', sbest.max(-1), out)
@@ -218,7 +219,7 @@ def extract(u8, gaps):
     del Sf, Ss
     # ---- dedispersion (pulsar / frb) ----
     Dd, t0s = dedisperse(z, valid)                                   # B,6,A,T
-    Dd = calibrate(Dd)
+    if CALIB: Dd = calibrate(Dd)
     disp = Dd[:, :, 2:]                                              # A>=2
     dbest = disp.max((2, 3))
     panel_aggs('disp_best', dbest, out)
@@ -254,7 +255,8 @@ def run(split, batch=200, aug=None):
     F = pd.concat(parts, ignore_index=True)
     os.makedirs('cache', exist_ok=True)
     tag = split if aug is None else f'{split}_aug{aug}'
-    F.to_pickle(f'cache/feat_{tag}.pkl')
+    pre = 'feat' if CALIB else 'featraw'
+    F.to_pickle(f'cache/{pre}_{tag}.pkl')
     print('done', tag, F.shape, f'{time.time() - t0:.0f}s')
 
 
